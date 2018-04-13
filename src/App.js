@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import "./App.css"
 
-const list = [
+const items = [
   {
     title: "React",
     url: "http://facebook.github.io/react/",
@@ -28,7 +28,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      list,
+      list: items,
       searchTerm: ""
     }
 
@@ -46,12 +46,17 @@ class App extends Component {
   }
 
   render() {
+    const { searchTerm, list } = this.state
     return (
       <div className="App">
         <form>
-          <input type="text" onChange={this.onSearchChange} />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={this.onSearchChange}
+          />
         </form>
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => (
+        {list.filter(isSearched(searchTerm)).map(item => (
           <div key={item.objectID}>
             <span>
               <a href={item.url}>{item.title}</a>
