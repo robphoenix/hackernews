@@ -60,13 +60,6 @@ class App extends Component {
       searchTerm: DEFAULT_QUERY,
       error: null,
     };
-
-    this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
-    this.setSearchTopStories = this.setSearchTopStories.bind(this);
-    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
-    this.onSearchSubmit = this.onSearchSubmit.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
   }
 
   componentDidMount() {
@@ -80,11 +73,11 @@ class App extends Component {
     this._isMounted = false;
   }
 
-  onSearchChange(e) {
+  onSearchChange = e => {
     this.setState({ searchTerm: e.target.value });
-  }
+  };
 
-  onSearchSubmit(e) {
+  onSearchSubmit = e => {
     const { searchTerm } = this.state;
     this.setState({ searchKey: searchTerm });
 
@@ -92,9 +85,9 @@ class App extends Component {
       this.fetchSearchTopStories(searchTerm);
     }
     e.preventDefault();
-  }
+  };
 
-  onDismiss(id) {
+  onDismiss = id => {
     const { searchKey, results } = this.state;
     const { hits, page } = results[searchKey];
     const updatedHits = hits.filter(item => item.objectID !== id);
@@ -104,9 +97,9 @@ class App extends Component {
         [searchKey]: { hits: updatedHits, page },
       },
     });
-  }
+  };
 
-  setSearchTopStories(result) {
+  setSearchTopStories = result => {
     const { hits, page } = result;
     const { searchKey, results } = this.state;
 
@@ -119,19 +112,19 @@ class App extends Component {
         [searchKey]: { hits: updatedHits, page },
       },
     });
-  }
+  };
 
-  needsToSearchTopStories(searchTerm) {
+  needsToSearchTopStories = searchTerm => {
     return !this.state.results[searchTerm];
-  }
+  };
 
-  fetchSearchTopStories(searchTerm, page = 0) {
+  fetchSearchTopStories = (searchTerm, page = 0) => {
     axios(
       `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`,
     )
       .then(result => this._isMounted && this.setSearchTopStories(result.data))
       .catch(error => this._isMounted && this.setState({ error }));
-  }
+  };
 
   render() {
     const { searchTerm, results, searchKey, error } = this.state;
@@ -171,3 +164,4 @@ class App extends Component {
 }
 
 export default App;
+export { Button, Search, Table };
